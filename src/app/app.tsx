@@ -14,25 +14,61 @@ export function App() {
 	};
 
 	const handleFieldTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-		dispatch(setFieldType(event.target.value));
+		const selectedFieldType = event.target.value;
+		dispatch(setFieldType(selectedFieldType));
+		setShowOptions(selectedFieldType !== "none"); // Update the showOptions state based on the selected fieldType
 	};
 
-	const [addedFields, setAddedFields] = useState<string[]>([]);
+	const [showOptions, setShowOptions] = useState(false);
 	const handleAddField = () => {
-		setAddedFields([...addedFields, fieldType]);
-		console.log(addedFields);
+		console.log("Add Field");
+		setShowOptions(true);
 	};
 
 	const displayOptions = () => {
 		switch (fieldType) {
 			case "text":
-				return (
-					<InputField
-						name="FieldDisplayName"
-						label="Field Display Name"
-						type="text"
-					/>
-				);
+				return <div>
+					<div>
+						<label htmlFor="FieldDisplayName">Field Display Name</label>
+						<InputField
+							name="FieldDisplayName"
+							label=""
+							type="text"
+						/>
+					</div>
+					<div>
+						<label htmlFor="FieldDisplayName">Field Data Type</label>
+						<InputField
+							name="FieldDataType"
+							label=""
+							type="dropdown"
+							options={["number", "text"]}
+						/>
+					</div>
+					<div>
+						<label htmlFor='FieldMaxLength'>Field Max length allowed</label>
+						<InputField
+							name="FieldMaxLength"
+							label=""
+							type="number"
+						/>
+					</div>
+					<div>
+						<label htmlFor="FieldMandatory">Mandatory</label>
+						<InputField
+							name="FieldMandatory"
+							label=""
+							type="dropdown"
+							options={["Yes", "No"]}
+						/>
+					</div>
+					<div>
+						<label htmlFor="FieldData">Field Data</label>
+						<input type='text' name="FieldData" />
+					</div>
+					<button type="button">Confirm</button>
+				</div>;
 			case "dropdown":
 				return (
 					<InputField
@@ -72,7 +108,7 @@ export function App() {
 					name="FieldSelect"
 					label="Select a Field Type"
 					type="dropdown"
-					options={["text", "dropdown", "date-picker"]}
+					options={["none", "text", "dropdown", "date-picker"]} // Add "none" option to the dropdown options
 					value={fieldType}
 					onChange={handleFieldTypeChange}
 				/>
@@ -82,11 +118,8 @@ export function App() {
 				Add Field
 			</button>
 
-			{addedFields.map((field, index) => (
-				<div key={index}>
-					{displayOptions()}
-				</div>
-			))}
+			{showOptions && displayOptions()}
+
 		</div>
 	);
 }

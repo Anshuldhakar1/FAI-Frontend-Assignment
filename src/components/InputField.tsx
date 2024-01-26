@@ -6,7 +6,7 @@ import TextInput from "./TextInput";
 
 interface InputFieldTypes {
     name: string;
-    type: "text" | "dropdown" | "date-picker";
+    type: "text" | "dropdown" | "date-picker" | "number";
 }
 
 export interface InputFieldProps {
@@ -35,6 +35,7 @@ const InputField: React.FC<InputFieldProps> = ({ name, type, label, options, val
     };
 
     switch (type) {
+        case "number": return <input type="number" name={name} placeholder={label} value={value} onChange={(event: React.ChangeEvent<HTMLSelectElement>) => handleFieldChange(event)} />;
         case "text":
             return <TextInput label={label} />;
         case "dropdown":
